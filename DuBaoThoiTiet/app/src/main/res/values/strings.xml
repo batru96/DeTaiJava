@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DuBaoThoiTiet</string>
+    <string name="navigation_drawer_open">open drawer</string>
+    <string name="navigation_drawer_close">close drawer</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
