@@ -137,8 +137,13 @@ public class MainActivity extends AppCompatActivity {
                 icon = SingletonClass.getInstance().ChangeStringIcon(icon);
                 int iconId = SingletonClass.getInstance().getImageId(this, icon);
 
-
-                DailyItem item = new DailyItem("Nothing", dt, iconId, humidity, speed, minDeg, maxDeg, description);
+                String dayOfWeek = "";
+                if (i == 0) {
+                    dayOfWeek = "Today";
+                } else {
+                    dayOfWeek = SingletonClass.getInstance().ConvertUnixToTime(dt, "EEE");
+                }
+                DailyItem item = new DailyItem(dayOfWeek, dt, iconId, humidity, speed, minDeg, maxDeg, description);
                 ds.add(item);
             }
             adapter.notifyDataSetChanged();
