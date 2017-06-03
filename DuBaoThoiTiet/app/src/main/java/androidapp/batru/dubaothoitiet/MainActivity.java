@@ -3,6 +3,9 @@ package androidapp.batru.dubaothoitiet;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<DailyItem> ds;
     private DailyAdapter adapter;
 
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +69,27 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawer.closeDrawers();
+                if (item.getItemId() == R.id.item_Tokyo) {
+                    cityName = "Tokyo";
+                    getJsonData();
+                } else if (item.getItemId() == R.id.item_NewYork) {
+                    cityName = "NewYork";
+                    getJsonData();
+                }
+                return true;
+            }
+        });
 
         tvCity = (TextView) findViewById(R.id.cityText);
         tvCurrentMain = (TextView) findViewById(R.id.tvCurrentMain);
@@ -207,21 +228,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.item_setting) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("Change City");
-            final EditText edtCityInput = new EditText(MainActivity.this);
-            edtCityInput.setInputType(InputType.TYPE_CLASS_TEXT);
-            edtCityInput.setHint("NewYork");
-            dialog.setView(edtCityInput);
-            dialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    cityName = SingletonClass.getInstance().ChuanHoaChuoi(edtCityInput.getText().toString());
-                    getJsonData();
-                }
-            });
-            dialog.show();
+        switch (item.getItemId()) {
+            case R.id.item_setting:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle("Change City");
+                final EditText edtCityInput = new EditText(MainActivity.this);
+                edtCityInput.setInputType(InputType.TYPE_CLASS_TEXT);
+                edtCityInput.setHint("NewYork");
+                dialog.setView(edtCityInput);
+                dialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cityName = SingletonClass.getInstance().ChuanHoaChuoi(edtCityInput.getText().toString());
+                        getJsonData();
+                    }
+                });
+                dialog.show();
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -245,5 +270,15 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("cityName", cityName);
         editor.apply();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     //endregion
 }

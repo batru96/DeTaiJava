@@ -2,9 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Nothing"
-        android:id="@+id/nothing"
-        />
+        android:id="@+id/item_NewYork"
+        android:title="NewYork" />
 
+    <item
+        android:id="@+id/item_Tokyo"
+        android:title="Tokyo" />
 
 </menu>
