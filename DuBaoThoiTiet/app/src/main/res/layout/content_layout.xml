@@ -1,6 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFF"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:text="NewYork, US" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            tools:drawableStart="@drawable/d01"
+            android:layout_centerVertical="true"
+            android:id="@+id/tvCurrentMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical"
+            android:textColor="#FFF"
+            android:textSize="30sp"
+            android:textStyle="italic"
+            tools:text="Clear" />
+
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:id="@+id/tvCurrentDeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFF"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            tools:text="38°C" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wind_speed"
+                android:textSize="@dimen/text_size"
+                android:textColor="#FFF" />
+
+            <TextView
+                android:layout_marginStart="4dp"
+                tools:text="30 m/s"
+                android:id="@+id/tvWindSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/textColor"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/humidity"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                tools:text="92%"
+                android:layout_marginStart="4dp"
+                android:textSize="@dimen/text_size"
+                android:id="@+id/tvHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="@dimen/text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Sunrise"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                tools:text="5:12 AM"
+                android:textSize="@dimen/text_size"
+                android:id="@+id/tvSunrise"
+                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Sunset"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                tools:text="7:20 PM"
+                android:textSize="@dimen/text_size"
+                android:id="@+id/tvSunset"
+                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textSize="@dimen/text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lastUpdated"
+            android:textColor="@color/textColor" />
+
+        <TextView
+            tools:text="12:58 AM"
+            android:textSize="@dimen/text_size"
+            android:id="@+id/tvLastUpdated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/textColor"
+            android:textStyle="italic" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -5,4 +5,9 @@
     <string name="title_activity_main2">Main2Activity</string>
 
     <string name="action_settings">Settings</string>
+    <string name="wind_speed">Wind Speed:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="Sunrise">Sunrise:</string>
+    <string name="Sunset">Sunset:</string>
+    <string name="lastUpdated">Last Updated:</string>
 </resources>
