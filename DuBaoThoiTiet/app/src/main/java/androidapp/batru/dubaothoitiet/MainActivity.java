@@ -1,13 +1,18 @@
 package androidapp.batru.dubaothoitiet;
 
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +36,7 @@ import model.VolleySingleton;
 public class MainActivity extends AppCompatActivity {
 
     private static final String VolleyTAG = "MYTAG";
+    private static final String PREF_NAME = "MyPref";
 
     private static final String mainUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
     private static final String dailyUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=";
@@ -202,22 +208,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_setting) {
-            getJsonData();
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("Change City");
+            final EditText edtCityInput = new EditText(MainActivity.this);
+            edtCityInput.setInputType(InputType.TYPE_CLASS_TEXT);
+            edtCityInput.setHint("NewYork");
+            dialog.setView(edtCityInput);
+            dialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    cityName = SingletonClass.getInstance().ChuanHoaChuoi(edtCityInput.getText().toString());
+                    getJsonData();
+                }
+            });
+            dialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     //region Luu sharedPreferences
     @Override
     protected void onStart() {
         super.onStart();
+        SharedPreferences pref = getSharedPreferences(PREF_NAME, 0);
+        if (pref.contains("cityName")) {
+            cityName = pref.getString("cityName", "Ha%20noi");
+            getJsonData();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
+        SharedPreferences cityPref = getSharedPreferences(PREF_NAME, 0);
+        SharedPreferences.Editor editor = cityPref.edit();
+        editor.putString("cityName", cityName);
+        editor.apply();
     }
     //endregion
 }
