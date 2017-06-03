@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import adapter.DailyAdapter;
+import model.DailyItem;
 import model.SingletonClass;
 import model.VolleySingleton;
 
@@ -36,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvWindSpeed, tvSunrise, tvSunset, tvLastUpdated;
     private ImageView imgIcon;
 
-    // Volley
+    private ListView listView;
+    private ArrayList<DailyItem> ds;
+    private DailyAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         tvLastUpdated = (TextView) findViewById(R.id.tvLastUpdated);
         imgIcon = (ImageView) findViewById(R.id.currentIconImage);
 
+        listView = (ListView) findViewById(R.id.listview);
+        ds = new ArrayList<>();
+        ds.add(new DailyItem("Monday", 122, R.drawable.d01, 20, 32, 26, 35, "Nothing"));
+        ds.add(new DailyItem("Tuesday", 140, R.drawable.d02, 20, 32, 26, 35, "Special"));
+        adapter = new DailyAdapter(this, R.layout.item_listview, ds);
+        listView.setAdapter(adapter);
     }
 
     private void getJsonData() {
