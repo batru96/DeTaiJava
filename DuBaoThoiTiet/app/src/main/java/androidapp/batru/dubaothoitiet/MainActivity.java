@@ -8,23 +8,35 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import model.SingletonClass;
+import model.VolleySingleton;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String VolleyTAG = "MYTAG";
+
+    private static final String url = "http://api.openweathermap.org/data/2.5/weather?q=";
     private static final String apiLink = "&appid=50c4705f25a93cb530a067bd324c4c8d";
     private String cityName = "Ha%20Noi";
 
     private TextView tvCity, tvCurrentMain, tvHumidity, tvCurrentDeg;
     private TextView tvWindSpeed, tvSunrise, tvSunset, tvLastUpdated;
+    private ImageView imgIcon;
+
+    // Volley
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,25 +64,65 @@ public class MainActivity extends AppCompatActivity {
         tvSunrise = (TextView) findViewById(R.id.tvSunrise);
         tvSunset = (TextView) findViewById(R.id.tvSunset);
         tvLastUpdated = (TextView) findViewById(R.id.tvLastUpdated);
+        imgIcon = (ImageView) findViewById(R.id.currentIconImage);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://api.openweathermap.org/data/2.5/weather?q=Ha%20Noi&appid=50c4705f25a93cb530a067bd324c4c8d";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+    }
+
+    private void getJsonData() {
+        String urlLink = url + cityName + apiLink;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+               urlLink , null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-                Log.v("AAAA", response);
+            public void onResponse(JSONObject response) {
+                ganDuLieu(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("ERROR", error.toString());
+                Toast.makeText(MainActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
-        queue.add(stringRequest);
+        jsonObjectRequest.setTag(VolleyTAG);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
-    private void requestData(){
+    private void ganDuLieu(JSONObject respone) {
+        if (respone == null)
+            return;
+        try {
+            JSONObject windObj = respone.getJSONObject("wind");
+            float speed = (float) windObj.getDouble("speed");
+            tvWindSpeed.setText(speed + " m/s");
 
+            JSONArray weatherArray = respone.getJSONArray("weather");
+            JSONObject weatherObj = weatherArray.getJSONObject(0);
+            String currentMain = weatherObj.getString("main");
+            tvCurrentMain.setText(currentMain);
+
+            String iconString = weatherObj.getString("icon");
+            String iconRaw = SingletonClass.getInstance().ChangeStringIcon(iconString);
+            int iconId = SingletonClass.getInstance().getImageId(this,iconRaw);
+            imgIcon.setImageResource(iconId);
+
+            String city = respone.getString("name");
+            JSONObject sysObj = respone.getJSONObject("sys");
+            String country = sysObj.getString("country");
+            tvCity.setText(city + ", " + country);
+
+            String timeLastUpdated = SingletonClass.getInstance().ConvertUnixToTime(respone.getInt("dt"), "h:mm a");
+            String timeSunrise = SingletonClass.getInstance().ConvertUnixToTime(sysObj.getInt("sunrise"), "h:mm a");
+            String timeSunset = SingletonClass.getInstance().ConvertUnixToTime(sysObj.getInt("sunset"), "h:mm a");
+            tvSunrise.setText(timeSunrise);
+            tvSunset.setText(timeSunset);
+            tvLastUpdated.setText(timeLastUpdated);
+
+            JSONObject mainObj = respone.getJSONObject("main");
+            String humidity = mainObj.getString("humidity");
+            tvHumidity.setText(humidity + "%");
+
+        } catch (JSONException e) {
+            Log.d("ERROR", e.getMessage());
+        }
     }
 
     @Override
@@ -82,8 +134,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_setting) {
-            Toast.makeText(this, "HELLO SETTING", Toast.LENGTH_SHORT).show();
+            getJsonData();
+            //Toast.makeText(this, "HELLO SETTING", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    //region Luu sharedPreferences
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+    //endregion
 }
