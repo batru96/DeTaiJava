@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import androidapp.batru.dubaothoitiet.R;
 import model.DailyItem;
+import model.SingletonClass;
 
 /**
  * Created by hoangkhoa on 6/3/17.
@@ -47,14 +48,16 @@ public class DailyAdapter extends ArrayAdapter<DailyItem>{
             TextView tvMinDeg = (TextView) convertView.findViewById(R.id.itemMinDeg);
             TextView tvMaxDeg = (TextView) convertView.findViewById(R.id.itemMaxDeg);
 
-            tvDateTime.setText(item.getTime() + "");
+            String date = SingletonClass.getInstance().ConvertUnixToTime(item.getTime(), "dd/MM");
+            tvDateTime.setText(date);
+
             tvDayOfWeek.setText(item.getDayOfWeek());
             tvDecriptions.setText(item.getDetail());
             imgIcon.setImageResource(item.getImageId());
             tvHumidity.setText("Humidity: " + item.getHumidity() + "%");
             tvSpeed.setText("Speed: " + item.getSpeed() + " m/s");
-            tvMinDeg.setText("Min: " + item.getMinDeg() + "*C");
-            tvMaxDeg.setText("Max: " + item.getMaxDeg() + "*C");
+            tvMinDeg.setText("Min: " + item.getMinDeg() + "°C");
+            tvMaxDeg.setText("Max: " + item.getMaxDeg() + "°C");
         }
 
         return convertView;

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -33,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String VolleyTAG = "MYTAG";
 
-    private static final String url = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static final String mainUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static final String dailyUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q=";
+    private static String soNgayLink = "&cnt=7";
     private static final String apiLink = "&appid=50c4705f25a93cb530a067bd324c4c8d";
     private String cityName = "Ha%20Noi";
 
@@ -75,14 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listview);
         ds = new ArrayList<>();
-        ds.add(new DailyItem("Monday", 122, R.drawable.d01, 20, 32, 26, 35, "Nothing"));
-        ds.add(new DailyItem("Tuesday", 140, R.drawable.d02, 20, 32, 26, 35, "Special"));
         adapter = new DailyAdapter(this, R.layout.item_listview, ds);
         listView.setAdapter(adapter);
     }
 
     private void getJsonData() {
-        String urlLink = url + cityName + apiLink;
+        String urlLink = mainUrl + cityName + apiLink;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                urlLink , null, new Response.Listener<JSONObject>() {
             @Override
@@ -92,11 +91,60 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("BANGGG", error.getMessage());
             }
         });
         jsonObjectRequest.setTag(VolleyTAG);
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+        String dailyLink = dailyUrl + cityName + soNgayLink + apiLink;
+        JsonObjectRequest dailyRequest = new JsonObjectRequest(Request.Method.GET, dailyLink, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ganDuLieuChoListView(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("BANGGG", error.getMessage());
+            }
+        });
+        dailyRequest.setTag(VolleyTAG);
+        VolleySingleton.getInstance(this).addToRequestQueue(dailyRequest);
+    }
+
+    private void ganDuLieuChoListView(JSONObject response) {
+        ds.clear();
+        try {
+            JSONArray listArr = response.getJSONArray("list");
+            for(int i = 0; i < listArr.length(); i++) {
+                JSONObject obj = listArr.getJSONObject(i);
+                int dt = obj.getInt("dt");
+                float speed = (float) obj.getDouble("speed");
+                int humidity = obj.getInt("humidity");
+
+                JSONObject tempObj = obj.getJSONObject("temp");
+                int minDeg = (int) (tempObj.getDouble("min") - 272.15f);
+                int maxDeg = (int) (tempObj.getDouble("max") - 272.15f);
+
+                JSONArray weatherArray = obj.getJSONArray("weather");
+                JSONObject weatherObj = weatherArray.getJSONObject(0);
+                String description = weatherObj.getString("main") + " - "
+                        + weatherObj.getString("description");
+
+                String icon = weatherObj.getString("icon");
+                icon = SingletonClass.getInstance().ChangeStringIcon(icon);
+                int iconId = SingletonClass.getInstance().getImageId(this, icon);
+
+
+                DailyItem item = new DailyItem("Nothing", dt, iconId, humidity, speed, minDeg, maxDeg, description);
+                ds.add(item);
+            }
+            adapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            Log.d("BANGGG", e.getMessage());
+        }
     }
 
     private void ganDuLieu(JSONObject respone) {
@@ -132,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
             JSONObject mainObj = respone.getJSONObject("main");
             String humidity = mainObj.getString("humidity");
             tvHumidity.setText(humidity + "%");
+            int deg = (int) (mainObj.getDouble("temp") - 272.15f);
+            tvCurrentDeg.setText(deg + "°C");
 
         } catch (JSONException e) {
             Log.d("ERROR", e.getMessage());
@@ -148,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_setting) {
             getJsonData();
-            //Toast.makeText(this, "HELLO SETTING", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -163,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
     }
     //endregion
 }
