@@ -80,13 +80,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawer.closeDrawers();
-                if (item.getItemId() == R.id.item_Tokyo) {
-                    cityName = "Tokyo";
-                    getJsonData();
-                } else if (item.getItemId() == R.id.item_NewYork) {
-                    cityName = "NewYork";
-                    getJsonData();
-                }
+                cityName = item.getTitle().toString();
+                hienThiDuLieu();
                 return true;
             }
         });
@@ -107,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    private void getJsonData() {
+    private void hienThiDuLieu() {
         String urlLink = mainUrl + cityName + apiLink;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                urlLink , null, new Response.Listener<JSONObject>() {
@@ -240,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         cityName = SingletonClass.getInstance().ChuanHoaChuoi(edtCityInput.getText().toString());
-                        getJsonData();
+                        hienThiDuLieu();
                     }
                 });
                 dialog.show();
@@ -258,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(PREF_NAME, 0);
         if (pref.contains("cityName")) {
             cityName = pref.getString("cityName", "Ha%20noi");
-            getJsonData();
+            hienThiDuLieu();
         }
     }
 
