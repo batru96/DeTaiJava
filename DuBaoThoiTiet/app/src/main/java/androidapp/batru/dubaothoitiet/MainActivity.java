@@ -1,6 +1,7 @@
 package androidapp.batru.dubaothoitiet;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -79,9 +81,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                drawer.closeDrawers();
-                cityName = item.getTitle().toString();
-                hienThiDuLieu();
+                menuItemClicked(item);
                 return true;
             }
         });
@@ -100,6 +100,21 @@ public class MainActivity extends AppCompatActivity {
         ds = new ArrayList<>();
         adapter = new DailyAdapter(this, R.layout.item_listview, ds);
         listView.setAdapter(adapter);
+    }
+
+    private void menuItemClicked(MenuItem item) {
+        drawer.closeDrawers();
+        if (item.getItemId()== R.id.menu_detail || item.getItemId() == R.id.menu_setting) {
+            if (item.getItemId() == R.id.menu_detail) {
+                startActivity(new Intent(MainActivity.this, DevelopedActivity.class));
+            } else {
+                Toast.makeText(this, "SETTINGGG", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            cityName = item.getTitle().toString();
+            hienThiDuLieu();
+        }
+        drawer.closeDrawers();
     }
 
     private void hienThiDuLieu() {

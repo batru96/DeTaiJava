@@ -17,6 +17,30 @@
                 android:id="@+id/item_seoul"
                 android:icon="@drawable/ic_menu_place"
                 android:title="Seoul" />
+
+            <item
+                android:id="@+id/item_Paris"
+                android:icon="@drawable/ic_menu_place"
+                android:title="Paris" />
+
+            <item
+                android:id="@+id/item_Berlin"
+                android:icon="@drawable/ic_menu_place"
+                android:title="Berlin" />
+
+            <item
+                android:id="@+id/item_london"
+                android:icon="@drawable/ic_menu_place"
+                android:title="London" />
+
+            <item
+                android:id="@+id/item_Hanoi"
+                android:icon="@drawable/ic_menu_place"
+                android:title="Ha Noi" />
+
+            <item
+                android:icon="@drawable/ic_menu_place"
+                android:title="New Mexico"/>
         </menu>
     </item>
 
