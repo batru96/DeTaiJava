@@ -253,8 +253,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(PREF_NAME, 0);
         if (pref.contains("cityName")) {
             cityName = pref.getString("cityName", "Ha%20noi");
-            hienThiDuLieu();
+        } else {
+            cityName = "Ha%20noi";
         }
+        hienThiDuLieu();
     }
 
     @Override

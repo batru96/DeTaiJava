@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/item_NewYork"
-        android:title="NewYork" />
+    <item android:title="Choose city">
+        <menu>
+            <item
+                android:id="@+id/item_NewYork"
+                android:icon="@drawable/ic_menu_place"
+                android:title="NewYork" />
 
-    <item
-        android:id="@+id/item_Tokyo"
-        android:title="Tokyo" />
+            <item
+                android:id="@+id/item_Tokyo"
+                android:icon="@drawable/ic_menu_place"
+                android:title="Tokyo" />
+
+            <item
+                android:id="@+id/item_seoul"
+                android:icon="@drawable/ic_menu_place"
+                android:title="Seoul" />
+        </menu>
+    </item>
+
+    <item android:title="More...">
+        <menu>
+            <item
+                android:id="@+id/menu_setting"
+                android:title="Setting" />
+
+            <item
+                android:id="@+id/menu_detail"
+                android:title="Application Detail" />
+        </menu>
+    </item>
 
 </menu>

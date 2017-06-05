@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:gravity="bottom"
+    android:background="@color/colorPrimary"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:background="@color/colorAccent"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <TextView
+        android:layout_margin="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Developed by: khoa_hoang"
+        android:textColor="#FFF"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_margin="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email: gietbarca@gmail.com"
+        android:textColor="#FFF"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_margin="4dp"
+        android:id="@+id/headerCityText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone number: 0986 729 636"
+        android:textColor="#FFF"
+        android:textSize="20sp" />
 </LinearLayout>
