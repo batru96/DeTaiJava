@@ -47,10 +47,6 @@
     <item android:title="More...">
         <menu>
             <item
-                android:id="@+id/menu_setting"
-                android:title="Setting" />
-
-            <item
                 android:id="@+id/menu_detail"
                 android:title="Application Detail" />
         </menu>

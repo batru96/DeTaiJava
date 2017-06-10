@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -59,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,12 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void menuItemClicked(MenuItem item) {
         drawer.closeDrawers();
-        if (item.getItemId()== R.id.menu_detail || item.getItemId() == R.id.menu_setting) {
-            if (item.getItemId() == R.id.menu_detail) {
-                startActivity(new Intent(MainActivity.this, DevelopedActivity.class));
-            } else {
-                Toast.makeText(this, "SETTINGGG", Toast.LENGTH_SHORT).show();
-            }
+        if (item.getItemId() == R.id.menu_detail) {
+            startActivity(new Intent(MainActivity.this, DevelopedActivity.class));
         } else {
             cityName = item.getTitle().toString();
             hienThiDuLieu();
@@ -120,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private void hienThiDuLieu() {
         String urlLink = mainUrl + cityName + apiLink;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-               urlLink , null, new Response.Listener<JSONObject>() {
+                urlLink, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ganDuLieu(response);
@@ -155,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         ds.clear();
         try {
             JSONArray listArr = response.getJSONArray("list");
-            for(int i = 0; i < listArr.length(); i++) {
+            for (int i = 0; i < listArr.length(); i++) {
                 JSONObject obj = listArr.getJSONObject(i);
                 int dt = obj.getInt("dt");
                 float speed = (float) obj.getDouble("speed");
@@ -204,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
             String iconString = weatherObj.getString("icon");
             String iconRaw = SingletonClass.getInstance().ChangeStringIcon(iconString);
-            int iconId = SingletonClass.getInstance().getImageId(this,iconRaw);
+            int iconId = SingletonClass.getInstance().getImageId(this, iconRaw);
             imgIcon.setImageResource(iconId);
 
             String city = respone.getString("name");
